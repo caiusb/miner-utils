@@ -44,7 +44,7 @@ class GitHub:
 				if sleepTime > 0:
 					self.__printWithTimeStamp('Exhausted the API Rate Limit. Sleeping for ' + str(sleepTime))
 					time.sleep(sleepTime)
-				resp = req.get(url, auth=auth, params=params)
+				resp = req.get(url, auth=self.auth, params=params)
 			self.__printWithTimeStamp("Resuming...")
 		return resp
 
