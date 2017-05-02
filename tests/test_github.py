@@ -1,5 +1,5 @@
 import unittest
-from github import GitHub
+from githubutils import GitHub
 
 class GitHubTest(unittest.TestCase):
 
