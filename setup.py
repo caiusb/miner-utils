@@ -8,6 +8,6 @@ setup(name='GitHubUtils',
       author='Caius Brindescu',
       author_email='caius@brindescu.com',
       url='https://github.com/caiusb/github-utils',
-      packages=['github'],
+      packages=['githubutils'],
       install_requires=['requests']
      )
