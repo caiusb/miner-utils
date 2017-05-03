@@ -21,22 +21,22 @@ class GitHub:
 		today = datetime.datetime.today()
 		print('[' + str(today) + ']: ' + text)
 
-	def doApiCall(self, url, params={}, listKey=None, perPage=100):
+	def doApiCall(self, url, params={}, headers={}, listKey=None, perPage=100):
 		url = url.strip('/')
 		if (not 'per_page' in params):
 			params['per_page'] = perPage
-		resp = self.__doRawApiCall(self.root + url, params=params)
+		resp = self.__doRawApiCall(self.root + url, params=params, headers=headers)
 		jsonList = json.loads(resp.text)
 		nextUrl = self.__getNextURL(resp)
 		while (nextUrl is not None):
-			resp = self.__doRawApiCall(nextUrl, params=params)
+			resp = self.__doRawApiCall(nextUrl, params=params, headers=headers)
 			newJsonList = json.loads(resp.text)
 			jsonList.extend(newJsonList)
 			nextUrl = self.__getNextURL(resp)
 		return jsonList
 
-	def __doRawApiCall(self, url, params={}):
-		resp = req.get(url, auth=self.auth, params=params)
+	def __doRawApiCall(self, url, params={}, headers={}):
+		resp = req.get(url, auth=self.auth, params=params, headers=headers)
 		if (resp.status_code == 403):
 			while resp.headers['X-RateLimit-Remaining'] == '0':
 				resetTime = float(resp.headers['X-RateLimit-Reset'])
@@ -44,7 +44,7 @@ class GitHub:
 				if sleepTime > 0:
 					self.__printWithTimeStamp('Exhausted the API Rate Limit. Sleeping for ' + str(sleepTime))
 					time.sleep(sleepTime)
-				resp = req.get(url, auth=self.auth, params=params)
+				resp = req.get(url, auth=self.auth, params=params, headers=headers)
 			self.__printWithTimeStamp("Resuming...")
 		return resp
 
