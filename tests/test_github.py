@@ -29,7 +29,7 @@ class GitHubTest(unittest.TestCase):
 	def test_headers(self):
 		stargazers = self.g.doApiCall('/repos/caiusb/gitective/stargazers', headers={'Accept': 'application/vnd.github.v3.star+json'})
 		self.assertTrue(len(stargazers) > 0)
-		self.assertTrue(stargazers[0].keys() == 2)
+		self.assertTrue(len(stargazers[0].keys()) == 2)
 
 if __name__ == '__main__':
 	unittest.main()
