@@ -26,10 +26,14 @@ class GitHub:
 		if (not 'per_page' in params):
 			params['per_page'] = perPage
 		resp = self.__doRawApiCall(self.root + url, params=params, headers=headers)
+		if (resp is None):
+			return None
 		jsonList = json.loads(resp.text)
 		nextUrl = self.__getNextURL(resp)
 		while (nextUrl is not None):
 			resp = self.__doRawApiCall(nextUrl, params=params, headers=headers)
+			if (resp is None): # This should not happen
+				return jsonList
 			newJsonList = json.loads(resp.text)
 			jsonList.extend(newJsonList)
 			nextUrl = self.__getNextURL(resp)
@@ -46,6 +50,8 @@ class GitHub:
 					time.sleep(sleepTime)
 				resp = req.get(url, auth=self.auth, params=params, headers=headers)
 			self.__printWithTimeStamp("Resuming...")
+		if (resp.status_code == 404):
+			return None
 		return resp
 
 	def __getNextURL(self, resp):
