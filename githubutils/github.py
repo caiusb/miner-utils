@@ -82,7 +82,7 @@ class GitHub:
 
 	def repoExists(self, user, repo):
 		resp = self.__doRawApiCall(self.root + 'repos/' + user + '/' + repo)
-		if (resp.status_code == 404):
+		if (resp is None):
 			return False
 		else:
 			return True
