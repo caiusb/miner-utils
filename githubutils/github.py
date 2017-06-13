@@ -31,15 +31,20 @@ class GitHub:
 		if (resp is None):
 			return None
 		if (url.split('/')[0] == 'search'):
+			search=True
 			jsonList = json.loads(resp.text)['items']
 		else:
+			search=False
 			jsonList = json.loads(resp.text)
 		nextUrl = self.__getNextURL(resp)
 		while (nextUrl is not None):
 			resp = self.__doRawApiCall(nextUrl, params=params, headers=headers)
 			if (resp is None): # This should not happen
 				return jsonList
-			newJsonList = json.loads(resp.text)
+			if (search):
+				newJsonList = json.loads(resp.text)['items']
+			else:
+				newJsonList = json.loads(resp.text)
 			jsonList.extend(newJsonList)
 			nextUrl = self.__getNextURL(resp)
 		return jsonList
