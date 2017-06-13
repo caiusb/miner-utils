@@ -30,7 +30,10 @@ class GitHub:
 		resp = self.__doRawApiCall(self.root + url, params=params, headers=headers)
 		if (resp is None):
 			return None
-		jsonList = json.loads(resp.text)
+		if (url.split('/')[0] == 'search'):
+			jsonList = json.loads(resp.text)['items']
+		else:
+			jsonList = json.loads(resp.text)
 		nextUrl = self.__getNextURL(resp)
 		while (nextUrl is not None):
 			resp = self.__doRawApiCall(nextUrl, params=params, headers=headers)
