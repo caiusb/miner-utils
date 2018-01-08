@@ -1,6 +1,7 @@
 #!/opt/local/bin/python
 
 from __future__ import print_function
+from urllib.parse import urlparse
 import os
 import time
 import requests as req
@@ -13,7 +14,7 @@ class GitHub:
 
 	root = 'https://api.github.com/'
 
-	def __init__(self, username = None, token = None): 
+	def __init__(self, username = None, token = None):
 		if (username is None or token is None):
 			self.auth = None
 		else:
@@ -24,7 +25,7 @@ class GitHub:
 		print('[' + str(today) + ']: ' + text)
 
 	def doApiCall(self, url, params={}, headers={}, listKey=None, perPage=100):
-		url = url.strip('/')
+		url = urlparse(url).path.strip('/')
 		if (not 'per_page' in params):
 			params['per_page'] = perPage
 		resp = self.__doRawApiCall(self.root + url, params=params, headers=headers)

@@ -4,7 +4,7 @@ from githubutils import GitHub
 class GitHubTest(unittest.TestCase):
 
 	def setUp(self):
-		self.g = GitHub()
+		self.g = GitHub("test2", "f5ea68446042e23f3de1f7583868e8416ef012d5")
 
 	def tearDown(self):
 		self.g = None
@@ -30,6 +30,12 @@ class GitHubTest(unittest.TestCase):
 		stargazers = self.g.doApiCall('/repos/caiusb/gitective/stargazers', headers={'Accept': 'application/vnd.github.v3.star+json'})
 		self.assertTrue(len(stargazers) > 0)
 		self.assertTrue(len(stargazers[0].keys()) == 2)
+
+	def test_follow_links(self):
+		repo = self.g.doApiCall('/repos/caiusb/gitective')
+		print(repo['forks_url'])
+		forks = self.g.doApiCall(repo['forks_url'])
+		self.assertTrue(len(forks) > 0)
 
 if __name__ == '__main__':
 	unittest.main()
