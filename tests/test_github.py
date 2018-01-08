@@ -4,7 +4,7 @@ from githubutils import GitHub
 class GitHubTest(unittest.TestCase):
 
 	def setUp(self):
-		self.g = GitHub("test2", "f5ea68446042e23f3de1f7583868e8416ef012d5")
+		self.g = GitHub()
 
 	def tearDown(self):
 		self.g = None
