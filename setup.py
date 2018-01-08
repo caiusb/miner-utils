@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='GitHubUtils',
-      version='1.2',
+      version='1.3',
       description='GitHub API Access Utilities',
       author='Caius Brindescu',
       author_email='caius@brindescu.com',
