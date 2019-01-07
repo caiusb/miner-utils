@@ -10,9 +10,7 @@ import json
 import datetime
 import sys
 
-class GitHub:
-
-	root = 'https://api.github.com/'
+class GitHubAuthentication:
 
 	def __init__(self, username = None, token = None):
 		if (username is None or token is None):
@@ -24,33 +22,54 @@ class GitHub:
 		today = datetime.datetime.today()
 		print('[' + str(today) + ']: ' + text)
 
-	def doApiCall(self, url, params={}, headers={}, listKey=None, perPage=100):
+	def genericApiCall(self, root, url, paginationArg, params={}, headers={}, perPage=100):
 		url = urlparse(url).path.strip('/')
-		if (not 'per_page' in params):
-			params['per_page'] = perPage
-		resp = self.__doRawApiCall(self.root + url, params=params, headers=headers)
+		if (not paginationArg in params):
+			params[paginationArg] = perPage
+		resp = self._doApiCall(root + url, params=params, headers=headers)
+		jsonList = self._processResp(url, resp)
+		nextUrl = self._getNextURL(resp)
+		while (nextUrl is not None):
+			resp = self._doApiCall(nextUrl, params=params, headers=headers)
+			if (resp is None): # This should not happen
+				return jsonList
+			newJsonList = self._processResp(nextUrl, resp)
+			jsonList.extend(newJsonList)
+			nextUrl = self._getNextURL(resp)
+		return jsonList
+	
+	def _doApiCall(self, url, params={}, headers={}):
+		pass
+	
+	def _processResp(self, url, resp):
+		pass
+	
+	def _getNextURL(self, resp):
+		pass
+
+	def usesAuth(self):
+		return not self.auth is None
+
+class GitHub(GitHubAuthentication):
+
+	root = 'https://api.github.com/'
+	paginationArg = 'per_page'
+
+	def __init__(self, username=None, token=None):
+		super(GitHub, self).__init__(username, token)
+
+	def _processResp(self, url, resp):
 		if (resp is None):
 			return None
 		if (url.split('/')[0] == 'search'):
-			search=True
-			jsonList = json.loads(resp.text)['items']
+			return json.loads(resp.text)['items']
 		else:
-			search=False
-			jsonList = json.loads(resp.text)
-		nextUrl = self.__getNextURL(resp)
-		while (nextUrl is not None):
-			resp = self.__doRawApiCall(nextUrl, params=params, headers=headers)
-			if (resp is None): # This should not happen
-				return jsonList
-			if (search):
-				newJsonList = json.loads(resp.text)['items']
-			else:
-				newJsonList = json.loads(resp.text)
-			jsonList.extend(newJsonList)
-			nextUrl = self.__getNextURL(resp)
-		return jsonList
+			return json.loads(resp.text)
 
-	def __doRawApiCall(self, url, params={}, headers={}):
+	def doApiCall(self, url, params={}, headers={}, perPage=100):
+		return self.genericApiCall(self.root, url, self.paginationArg, params, headers, perPage)
+
+	def _doApiCall(self, url, params={}, headers={}):
 		resp = req.get(url, auth=self.auth, params=params, headers=headers)
 		if (resp.status_code == 403):
 			while resp.headers['X-RateLimit-Remaining'] == '0':
@@ -65,7 +84,7 @@ class GitHub:
 			return None
 		return resp
 
-	def __getNextURL(self, resp):
+	def _getNextURL(self, resp):
 		if (not 'Link' in resp.headers):
 			return None
 		linksText = resp.headers['Link']
@@ -90,11 +109,8 @@ class GitHub:
 		return json.dumps(jsonDict, separators=(',',':'))
 
 	def repoExists(self, user, repo):
-		resp = self.__doRawApiCall(self.root + 'repos/' + user + '/' + repo)
+		resp = self._doApiCall(self.root + 'repos/' + user + '/' + repo)
 		if (resp is None):
 			return False
 		else:
 			return True
-
-	def usesAuth(self):
-		return not self.auth is None

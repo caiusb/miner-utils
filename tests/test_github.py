@@ -33,9 +33,12 @@ class GitHubTest(unittest.TestCase):
 
 	def test_follow_links(self):
 		repo = self.g.doApiCall('/repos/caiusb/gitective')
-		print(repo['forks_url'])
 		forks = self.g.doApiCall(repo['forks_url'])
 		self.assertTrue(len(forks) > 0)
+
+	def test_search_api(self):
+		users = self.g.doApiCall('/search/users', params={'q': 'caiusb'})
+		self.assertTrue(len(users) > 0)
 
 if __name__ == '__main__':
 	unittest.main()
