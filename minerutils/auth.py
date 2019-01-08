@@ -6,7 +6,7 @@ class MinerWithAuthentication:
 	def __init__(self, username = None, token = None):
 		if (username is None and token is None):
 			self.auth = None
-		elif(token is not None):
+		elif(token is not None and username is None):
 			self.auth = token
 		else:
 			self.auth = (username, token)
