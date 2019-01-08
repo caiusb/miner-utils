@@ -1,4 +1,5 @@
 from urllib.parse import urlparse
+import requests as req
 
 class GitHubAuthentication:
 
