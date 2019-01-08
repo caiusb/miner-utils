@@ -29,15 +29,11 @@ class Travis(MinerWithAuthentication):
 
     def getBuilds(self, repoSlug):
         encodedSlug = urllib.parse.quote(repoSlug,safe='')
-        return self.genericApiCall(self.root, "/repo/" + encodedSlug + "/builds", "limit", 
-                headers={'Travis-API-Version': '3'})
+        return self.makeCall("/repo/" + encodedSlug + "/builds")
 
     def getBuild(self, buildId):
-        return self.__makeCall("/build/" + str(buildId))
+        return self.makeCall("/build/" + str(buildId))
 
-    def __makeCall(self, endpoint, params={}, headers={}):
+    def makeCall(self, endpoint, params={}, headers={}):
         headers['Travis-API-Version'] = '3'
         return self.genericApiCall(self.root, endpoint, "limit", headers=headers)
-
-    def makeCall(self, endpoint):
-        return self.__makeCall(endpoint)
