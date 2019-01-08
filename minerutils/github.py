@@ -27,10 +27,10 @@ class GitHub(MinerWithAuthentication):
 		else:
 			return json.loads(resp.text)
 
-	def doApiCall(self, url, params={}, headers={}, perPage=100):
+	def get(self, url, params={}, headers={}, perPage=100):
 		return self.genericApiCall(self.root, url, self.paginationArg, params, headers, perPage)
 
-	def _doApiCall(self, url, params={}, headers={}):
+	def _get(self, url, params={}, headers={}):
 		resp = req.get(url, auth=self.auth, params=params, headers=headers)
 		if (resp.status_code == 403):
 			while resp.headers['X-RateLimit-Remaining'] == '0':
@@ -60,7 +60,7 @@ class GitHub(MinerWithAuthentication):
 		return self.root + repo['username'] + '/' + repo['repo']
 
 	def getRemainingRateLimit(self):
-		limit = self.doApiCall('rate_limit')
+		limit = self.get('rate_limit')
 		return limit['rate']['remaining']
 
 	def printRemainingRateLimit(self):
@@ -70,7 +70,7 @@ class GitHub(MinerWithAuthentication):
 		return json.dumps(jsonDict, separators=(',',':'))
 
 	def repoExists(self, user, repo):
-		resp = self._doApiCall(self.root + 'repos/' + user + '/' + repo)
+		resp = self._get(self.root + 'repos/' + user + '/' + repo)
 		if (resp is None):
 			return False
 		else:

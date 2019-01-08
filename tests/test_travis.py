@@ -15,7 +15,7 @@ class TravisTest(unittest.TestCase):
         self.assertEqual("passed", build['state'])
 
     def test_get_a_job(self):
-        job = self.t.makeCall("/job/462369733")
+        job = self.t.get("/job/462369733")
         self.assertIsNotNone(job)
         
 if __name__ == '__main__':

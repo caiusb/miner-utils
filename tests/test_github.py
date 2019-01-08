@@ -23,21 +23,21 @@ class GitHubTest(unittest.TestCase):
 		self.assertTrue(self.g.getRemainingRateLimit() <= limit)
 
 	def test_paginated_call(self):
-		reposNo = len(self.g.doApiCall('users/caiusb/repos', perPage=10))
+		reposNo = len(self.g.get('users/caiusb/repos', perPage=10))
 		self.assertTrue(reposNo >= 47)
 
 	def test_headers(self):
-		stargazers = self.g.doApiCall('/repos/caiusb/gitective/stargazers', headers={'Accept': 'application/vnd.github.v3.star+json'})
+		stargazers = self.g.get('/repos/caiusb/gitective/stargazers', headers={'Accept': 'application/vnd.github.v3.star+json'})
 		self.assertTrue(len(stargazers) > 0)
 		self.assertTrue(len(stargazers[0].keys()) == 2)
 
 	def test_follow_links(self):
-		repo = self.g.doApiCall('/repos/caiusb/gitective')
-		forks = self.g.doApiCall(repo['forks_url'])
+		repo = self.g.get('/repos/caiusb/gitective')
+		forks = self.g.get(repo['forks_url'])
 		self.assertTrue(len(forks) > 0)
 
 	def test_search_api(self):
-		users = self.g.doApiCall('/search/users', params={'q': 'caiusb'})
+		users = self.g.get('/search/users', params={'q': 'caiusb'})
 		self.assertTrue(len(users) > 0)
 
 if __name__ == '__main__':

@@ -19,11 +19,11 @@ class MinerWithAuthentication:
 		url = urlparse(url).path.strip('/')
 		if (not paginationArg in params):
 			params[paginationArg] = perPage
-		resp = self._doApiCall(root + url, params=params, headers=headers)
+		resp = self._get(root + url, params=params, headers=headers)
 		jsonList = self._processResp(url, resp)
 		nextUrl = self._getNextURL(resp)
 		while (nextUrl is not None):
-			resp = self._doApiCall(nextUrl, params=params, headers=headers)
+			resp = self._get(nextUrl, params=params, headers=headers)
 			if (resp is None): # This should not happen
 				return jsonList
 			newJsonList = self._processResp(nextUrl, resp)
@@ -31,7 +31,7 @@ class MinerWithAuthentication:
 			nextUrl = self._getNextURL(resp)
 		return jsonList
 	
-	def _doApiCall(self, url, params={}, headers={}):
+	def _get(self, url, params={}, headers={}):
 		resp = req.get(url, auth=self.auth, params=params, headers=headers)
 		if (resp.status_code == 200):
 			return resp
