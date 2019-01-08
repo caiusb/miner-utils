@@ -1,5 +1,5 @@
 import unittest
-from githubutils import Travis
+from minerutils import Travis
 
 class TravisTest(unittest.TestCase):
 

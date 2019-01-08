@@ -1,5 +1,5 @@
 import unittest
-from githubutils import GitHub
+from minerutils import GitHub
 
 class GitHubTest(unittest.TestCase):
 

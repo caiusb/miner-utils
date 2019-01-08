@@ -1,6 +1,6 @@
 import json
 import urllib
-from githubutils.auth import MinerWithAuthentication
+from minerutils.auth import MinerWithAuthentication
 
 class Travis(MinerWithAuthentication):
     

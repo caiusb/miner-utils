@@ -9,7 +9,7 @@ import re
 import json
 import datetime
 import sys
-from githubutils.auth import MinerWithAuthentication
+from minerutils.auth import MinerWithAuthentication
 
 class GitHub(MinerWithAuthentication):
 
