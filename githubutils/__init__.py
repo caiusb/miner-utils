@@ -1,3 +1,3 @@
-from .ghauth import GitHubAuthentication
+from .auth import MinerWithAuthentication
 from .github import GitHub
 from .travis import Travis

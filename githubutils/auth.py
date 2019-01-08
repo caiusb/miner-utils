@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 import requests as req
 
-class GitHubAuthentication:
+class MinerWithAuthentication:
 
 	def __init__(self, username = None, token = None):
 		if (username is None and token is None):

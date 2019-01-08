@@ -9,9 +9,9 @@ import re
 import json
 import datetime
 import sys
-from githubutils.ghauth import GitHubAuthentication
+from githubutils.auth import MinerWithAuthentication
 
-class GitHub(GitHubAuthentication):
+class GitHub(MinerWithAuthentication):
 
 	root = 'https://api.github.com/'
 	paginationArg = 'per_page'

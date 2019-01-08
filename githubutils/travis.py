@@ -1,8 +1,8 @@
 import json
 import urllib
-from githubutils.ghauth import GitHubAuthentication
+from githubutils.auth import MinerWithAuthentication
 
-class Travis(GitHubAuthentication):
+class Travis(MinerWithAuthentication):
     
     root = "http://api.travis-ci.org/"
 
