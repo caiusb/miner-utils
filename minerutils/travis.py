@@ -17,7 +17,9 @@ class Travis(MinerWithAuthentication):
             return None
         if (jsonResp['@pagination']['next'] is None):
             return None
-        return self.root + jsonResp['@pagination']['next']['href']
+        if (jsonResp['@pagination']['next']['@href'] is None):
+            return None
+        return self.root + jsonResp['@pagination']['next']['@href']
 
     def _processResp(self, url, resp):
         if (resp is None):
