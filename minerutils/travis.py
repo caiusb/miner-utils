@@ -25,8 +25,8 @@ class Travis(MinerWithAuthentication):
         if (resp is None):
             return None
         jsonResp = json.loads(resp.text)
-        if ('build' in jsonResp):
-            return jsonResp['build']
+        if ('builds' in jsonResp):
+            return jsonResp['builds']
         return jsonResp
 
     def getBuilds(self, repoSlug):

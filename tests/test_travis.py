@@ -8,7 +8,7 @@ class TravisTest(unittest.TestCase):
 
     def test_get_builds(self):
         builds = self.t.getBuilds("cs361fall2018/cs361fall2018.github.io")
-        self.assertTrue(len(builds) > 0)
+        self.assertTrue(len(builds) > 10)
 
     def test_get_a_build(self):
         build = self.t.getBuild(462369732)
