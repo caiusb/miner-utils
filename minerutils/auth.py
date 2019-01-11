@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 import requests as req
+import datetime
 
 class MinerWithAuthentication:
 
@@ -11,7 +12,7 @@ class MinerWithAuthentication:
 		else:
 			self.auth = (username, token)
 
-	def __printWithTimeStamp(self, text):
+	def _printWithTimeStamp(self, text):
 		today = datetime.datetime.today()
 		print('[' + str(today) + ']: ' + text)
 
