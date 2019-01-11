@@ -1,5 +1,6 @@
 import json
 import urllib
+import urllib.parse
 from minerutils.auth import MinerWithAuthentication
 
 class Travis(MinerWithAuthentication):
@@ -19,7 +20,7 @@ class Travis(MinerWithAuthentication):
             return None
         if (jsonResp['@pagination']['next']['@href'] is None):
             return None
-        return self.root + jsonResp['@pagination']['next']['@href']
+        return urllib.parse.urljoin(self.root, jsonResp['@pagination']['next']['@href'])
 
     def _processResp(self, url, resp):
         if (resp is None):

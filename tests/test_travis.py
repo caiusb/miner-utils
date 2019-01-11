@@ -17,6 +17,10 @@ class TravisTest(unittest.TestCase):
     def test_get_a_job(self):
         job = self.t.get("/job/462369733")
         self.assertIsNotNone(job)
+
+    def test_get_multiple_pages(self):
+        builds = self.t.getBuilds("scala/scala")
+        self.assertTrue(len(builds) > 100)
         
 if __name__ == '__main__':
 	unittest.main()
