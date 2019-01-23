@@ -40,5 +40,9 @@ class GitHubTest(unittest.TestCase):
 		users = self.g.get('/search/users', params={'q': 'caiusb'})
 		self.assertTrue(len(users) > 0)
 
+	def test_url_params(self):
+		users = self.g.get('/search/users?q=caiusb')
+		self.assertTrue(len(users) > 0)
+
 if __name__ == '__main__':
 	unittest.main()

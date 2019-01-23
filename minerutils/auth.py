@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 import requests as req
 import datetime
 
@@ -17,7 +17,10 @@ class MinerWithAuthentication:
 		print('[' + str(today) + ']: ' + text)
 
 	def genericApiCall(self, root, url, paginationArg, params={}, headers={}, perPage=100):
-		url = urlparse(url).path.strip('/')
+		parsedUrl = urlparse(url)
+		url = parsedUrl.path.strip('/')
+		query = parse_qs(parsedUrl.query)
+		params = {**params, **query}
 		if (not paginationArg in params):
 			params[paginationArg] = perPage
 		resp = self._get(root + url, params=params, headers=headers)
