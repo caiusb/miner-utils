@@ -4,3 +4,6 @@ __pycache__/
 env/
 build/
 .vscode/
+dist/
+MANIFEST
+MinerUtils.egg-info/
